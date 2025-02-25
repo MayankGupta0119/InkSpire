@@ -6,6 +6,14 @@ import SearchInput from "./SearchInput";
 import { ToggleMode } from "./ToggleMode";
 import { Menu, Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  SignOutButton,
+  SignUpButton,
+  UserButton,
+} from "@clerk/nextjs";
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   return (
@@ -14,7 +22,7 @@ export default function Navbar() {
         <div className="flex h-16 items-center justify-between">
           {/* left section */}
           <div className="flex items-center gap-8">
-            <Link href="/" className="flex items-center space-x-2">
+            <Link href={"/"} className="flex items-center space-x-2">
               <span className="font-bold text-2xl">
                 <span className="bg-gradient-to-r from-purple-600 to bg-indigo-500 dark:from-purple-400 dark:to-indigo-400 bg-clip-text text-transparent">
                   Ink
@@ -54,10 +62,22 @@ export default function Navbar() {
           <div className="flex items-center gap-4">
             <SearchInput />
             <ToggleMode />
-            <div className="hidden md:flex items-center gap-2 ">
-              <Button>Login</Button>
-              <Button>Signup</Button>
-            </div>
+
+            {/* user action */}
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+
+            <SignedOut>
+              <div className="hidden md:flex items-center gap-2 ">
+                <SignInButton>
+                  <Button variant={"outline"}>Login</Button>
+                </SignInButton>
+                <SignUpButton>
+                  <Button>Signup</Button>
+                </SignUpButton>
+              </div>
+            </SignedOut>
           </div>
 
           {/* Mobile Menu button */}
