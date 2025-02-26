@@ -4,6 +4,8 @@ import TopArticles from "@/components/home/TopArticles";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { BlogFooter } from "./BlogFooter";
+import { Suspense } from "react";
+import Loader from "@/components/Loader";
 export default function Home() {
   return (
     <div>
@@ -19,8 +21,10 @@ export default function Home() {
               </h2>
               <p>Discover our most popular and trending content</p>
             </div>
+            <Suspense fallback={<Loader />}>
+              <TopArticles />
+            </Suspense>
 
-            <TopArticles />
             <div className="text-center mt-12">
               <Link href={"/articles"}>
                 <Button className="rounded-full hover:bg-gray-900 hover:text-white dark:bg-white dark:hover:text-gray-900">

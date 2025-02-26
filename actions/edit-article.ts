@@ -1,5 +1,6 @@
 "use server";
 import { auth } from "@clerk/nextjs/server";
+import { error } from "console";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { v2 as cloudinary, UploadApiResponse } from "cloudinary";
@@ -20,15 +21,16 @@ const createArticleSchema = z.object({
 
 type CreateArticleFormState = {
   errors: {
-    title?: string[];
-    category?: string[];
-    content?: string[];
-    featuredImage?: string[];
-    formErrors?: string[];
+    title?: string;
+    category?: string;
+    content?: string;
+    featuredImage?: string;
+    formErrors?: string;
   };
 };
 
-export const createArticle = async (
+export const editArticle = async (
+  articleId: string,
   prevState: CreateArticleFormState,
   formData: FormData
 ) => {
@@ -45,8 +47,9 @@ export const createArticle = async (
       errors: result.error.flatten().fieldErrors,
     };
   }
-
-  // Checking if the user is authenticated
+  //checking if user is authenticated
+  // const authres = await auth();
+  // console.log(authres);
   const { userId } = await auth();
   if (!userId) {
     return {
@@ -56,26 +59,40 @@ export const createArticle = async (
     };
   }
 
-  // Finding the actual userId object
+  const existingArticle = await prisma.article.findUnique({
+    where: {
+      id: articleId,
+    },
+  });
+
+  if (!existingArticle) {
+    return {
+      errors: {
+        formErrors: ["Article not found"],
+      },
+    };
+  }
+
+  //the id returned from clerk auth is clerkUserId, now finding the actual userId object
   const existingUser = await prisma.user.findUnique({
     where: {
       clerkUserId: userId,
     },
   });
 
-  if (!existingUser) {
+  if (!existingUser || existingArticle.authorId !== existingUser.id) {
     return {
       errors: {
         formErrors: ["User not found"],
       },
     };
   }
+  //start creating article
 
-  // Handle optional image upload
-  let imageUrl: string | null = null;
   const imageFile = formData.get("featuredImage") as File | null;
+  let imageUrl = existingArticle.featuredImage;
 
-  if (imageFile && imageFile.size > 0) {
+  if (imageFile && imageFile.name !== "undefined") {
     try {
       const arrayBuffer = await imageFile.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
@@ -96,23 +113,40 @@ export const createArticle = async (
         }
       );
 
-      imageUrl = uploadResponse?.secure_url || null;
-    } catch (error) {
-      return {
-        errors: {
-          featuredImage: ["Failed to upload image, Please try again"],
-        },
-      };
+      if (uploadResponse?.secure_url) {
+        imageUrl = uploadResponse.secure_url;
+      } else {
+        return {
+          errors: {
+            featuredImage: ["failded to upload the image"],
+          },
+        };
+      }
+    } catch (e) {
+        return {
+            errors:{
+                formErrors:['Error while uploading the image, Please try again']
+            }
+        }
     }
   }
 
+  if (!imageUrl) {
+    return {
+      errors: {
+        featuredImage: ["Failed to upload image, Please try again"],
+      },
+    };
+  }
+
   try {
-    await prisma.article.create({
+    await prisma.article.update({
+      where: { id: articleId },
       data: {
         title: result.data.title,
         category: result.data.category,
         content: result.data.content,
-        featuredImage: imageUrl || "", // Can be null now
+        featuredImage: imageUrl,
         authorId: existingUser.id,
       },
     });
@@ -126,7 +160,7 @@ export const createArticle = async (
     } else {
       return {
         errors: {
-          formErrors: ["Some internal server error occurred"],
+          formErrors: ["Some internal server error occured"],
         },
       };
     }

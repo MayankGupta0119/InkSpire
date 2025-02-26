@@ -12,20 +12,26 @@ import dynamic from "next/dynamic";
 import { Button } from "../ui/button";
 import "react-quill-new/dist/quill.snow.css";
 import { createArticle } from "@/actions/create-article";
+import type { Article } from "@prisma/client";
+import Image from "next/image";
+import { editArticle } from "@/actions/edit-article";
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
-export default function CreateArticlesPage() {
-  const [formState, action, isPending] = useActionState(createArticle, {
-    errors: {}, // Ensure correct type
-  });
-  const [content, setContent] = useState("");
+type EditArticleProps = {
+  article: Article;
+};
+
+export const EditArticlePage: React.FC<EditArticleProps> = ({ article }) => {
+  const [formState, action, isPending] = useActionState(
+    editArticle.bind(null, article.id),
+    {
+      errors: {}, // Ensure correct type
+    }
+  );
+  const [content, setContent] = useState(article.content);
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
-
     formData.append("content", content);
     startTransition(() => {
       action(formData);
@@ -44,6 +50,7 @@ export default function CreateArticlesPage() {
                 type="text"
                 name="title"
                 placeholder="Enter title of the article"
+                defaultValue={article.title}
               ></Input>
               {formState.errors.title && (
                 <span className="text-red-600 text-sm">
@@ -56,6 +63,7 @@ export default function CreateArticlesPage() {
               <select
                 name="category"
                 id="category"
+                defaultValue={article.category}
                 className="flex h-10 w-full rounded-md"
               >
                 <option value="">Select Category</option>
@@ -106,7 +114,16 @@ export default function CreateArticlesPage() {
                 id="featuredImage"
                 name="featuredImage"
                 accept="image/*"
-              ></Input>
+              />
+              <div className="mb-4">
+                {article.featuredImage && (
+                  <img
+                    src={article.featuredImage}
+                    alt="prev_image"
+                    className="w-48 h-32 object-cover rounded-md"
+                  />
+                )}
+              </div>
             </div>
             <div className="space-y-2">
               <Label>Content</Label>
@@ -120,7 +137,7 @@ export default function CreateArticlesPage() {
             <div className="flex justify-end gap-4">
               <Button variant={"outline"}>Cancel</Button>
               <Button type="submit" disabled={isPending}>
-                {isPending ? "Loading..." : "Publish Article"}
+                {isPending ? "Loading..." : "Edit Article"}
               </Button>
             </div>
           </form>
@@ -128,4 +145,4 @@ export default function CreateArticlesPage() {
       </Card>
     </div>
   );
-}
+};

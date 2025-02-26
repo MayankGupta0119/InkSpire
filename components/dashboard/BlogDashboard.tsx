@@ -1,10 +1,24 @@
 import React from "react";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { FileText, MessageCircle, PlusCircle } from "lucide-react";
+import { Clock, FileText, MessageCircle, PlusCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import RecentArticless from "./RecentArticless";
-export default function BlogDashboard() {
+import {RecentArticless} from "./RecentArticless";
+import { prisma } from "@/lib/prisma";
+import { resolve } from "path";
+import { rejects } from "assert";
+export default async function BlogDashboard() {
+  // getting all articles to show
+  const articles = await prisma.article.findMany({
+    orderBy: { createdAt: "desc" },
+    include: {
+      comments: true,
+      author: { select: { name: true, email: true, imageUrl: true } },
+    },
+  });
+
+  //getting totalcomments
+  const totalcomments = await prisma.comment.count();
   return (
     <main className="flex-1 p-4 md:p-8">
       <div className="flex justify-between items-center mb-8">
@@ -31,7 +45,7 @@ export default function BlogDashboard() {
             <FileText className="h-4 w-4" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">2</div>
+            <div className="text-2xl font-bold">{articles.length}</div>
             <p className="text-sm text-muted-foreground mt-1">
               +5 from last month
             </p>
@@ -45,7 +59,7 @@ export default function BlogDashboard() {
             <MessageCircle className="h-4 w-4" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">3</div>
+            <div className="text-2xl font-bold">{totalcomments}</div>
             <p className="text-sm text-muted-foreground mt-1">
               12 awaiting moderation
             </p>
@@ -56,7 +70,7 @@ export default function BlogDashboard() {
             <CardTitle className="font-medium text-sm">
               Avg Rating Time
             </CardTitle>
-            <FileText className="h-4 w-4" />
+            <Clock className="h-4 w-4" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">4.2</div>
@@ -67,7 +81,7 @@ export default function BlogDashboard() {
         </Card>
       </div>
       {/* <h1>Recent Articles</h1> */}
-      <RecentArticless />
+      <RecentArticless articles={articles} />
     </main>
   );
 }
