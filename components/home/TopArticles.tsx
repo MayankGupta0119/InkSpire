@@ -23,6 +23,7 @@ export default async function TopArticles() {
       },
     },
   });
+  // console.log("-------aritcles-----", article);
   return (
     <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
       {article.slice(0, 3).map((article) => (

@@ -152,10 +152,18 @@ export default function Navbar() {
 
           {/* Mobile Auth Buttons */}
           <div className="px-4 flex flex-col gap-2">
-            <Button variant="outline" className="w-full">
-              Login
-            </Button>
-            <Button className="w-full">Sign up</Button>
+            <SignInButton>
+              <div className="w-full">
+                <Button variant="outline" className="w-full">
+                  Login
+                </Button>
+              </div>
+            </SignInButton>
+            <SignUpButton>
+              <div className="w-full">
+                <Button className="w-full">Sign up</Button>
+              </div>
+            </SignUpButton>
           </div>
         </div>
       )}

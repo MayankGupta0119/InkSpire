@@ -26,6 +26,16 @@ const page: React.FC<searchPageProps> = async ({ searchParams }) => {
       <main className="conatiner mx-auto px-4 py-12 sm:px-4 lg:text-5xl">
         {/* page header */}
         <div className="mb-12 space-y-6 text-center">
+          <div className="flex items-center gap-8">
+            <Link href={"/"} className="flex items-center space-x-2">
+              <span className="font-bold text-2xl">
+                <span className="bg-gradient-to-r from-yellow-500 to-orange-400 dark:to-yellow-400 bg-clip-text text-transparent">
+                  Ink
+                </span>
+                <span className="text-foreground">Spire</span>
+              </span>
+            </Link>
+          </div>
           <h1 className="text-4xl font-bold sm:text-5xl">All Articles</h1>
           {/* Search Bar */}
           <SearchArticle />
