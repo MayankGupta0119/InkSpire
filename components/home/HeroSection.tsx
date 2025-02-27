@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 export default function HeroSection() {
   return (
@@ -27,10 +28,14 @@ export default function HeroSection() {
             prespectives on technology, lifestyle and innovations
           </p>
           <div className="flex flex-col items-center gap-4 sm:flex-row md:justify-start">
-            <Button className="rounded-full text-lg">Start Reading</Button>
-            <Button className="rounded-full text-lg" variant={"outline"}>
-              Explore Topics
-            </Button>
+            <Link href={"/articles"} passHref>
+              <div className="flex gap-4">
+                <Button className="rounded-full text-lg">Start Reading</Button>
+                <Button className="rounded-full text-lg" variant={"outline"}>
+                  Explore Topics
+                </Button>
+              </div>
+            </Link>
           </div>
           <div className="grid grid-cols-3 gap-4 pt-8 text-black md:max-w-md">
             <div className="space-y-2">
