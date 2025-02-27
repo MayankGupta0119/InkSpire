@@ -6,6 +6,7 @@ import Link from "next/link";
 import { BlogFooter } from "./BlogFooter";
 import { Suspense } from "react";
 import Loader from "@/components/Loader";
+import { AllArticlesPageSkeleton } from "../articles/page";
 export default function Home() {
   return (
     <div>
@@ -21,7 +22,7 @@ export default function Home() {
               </h2>
               <p>Discover our most popular and trending content</p>
             </div>
-            <Suspense fallback={<Loader />}>
+            <Suspense fallback={<AllArticlesPageSkeleton />}>
               <TopArticles />
             </Suspense>
 
