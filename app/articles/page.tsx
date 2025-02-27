@@ -1,6 +1,5 @@
 import AllArticles from "@/components/articles/AllArticles";
 import SearchArticle from "@/components/articles/SearchArticle";
-import Loader from "@/components/Loader";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";

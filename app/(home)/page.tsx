@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { BlogFooter } from "./BlogFooter";
 import { Suspense } from "react";
-import Loader from "@/components/Loader";
 import { AllArticlesPageSkeleton } from "../articles/page";
 export default function Home() {
   return (

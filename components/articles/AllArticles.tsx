@@ -2,7 +2,6 @@ import React from "react";
 import { Card } from "../ui/card";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { fetchArticleByQuery } from "@/lib/query/fetchArticleByQuery";
 import { Search } from "lucide-react";
 import type { Prisma } from "@prisma/client";
 

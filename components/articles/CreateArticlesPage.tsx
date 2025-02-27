@@ -22,10 +22,6 @@ export default function CreateArticlesPage() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
-
     formData.append("content", content);
     startTransition(() => {
       action(formData);

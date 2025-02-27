@@ -1,8 +1,5 @@
 import React from "react";
 import { Button } from "../ui/button";
-import { cn } from "@/lib/utils";
-// import { Image } from "lucide-react";
-import Image from "next/image";
 
 export default function HeroSection() {
   return (
