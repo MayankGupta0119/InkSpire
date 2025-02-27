@@ -6,24 +6,26 @@ import Image from "next/image";
 
 export default function HeroSection() {
   return (
-    <section className="realtive min-h-[600px] w-full overflow-hidden bg-gradient-to-br from-purple-600 via-indigo-950 to-indigo-950">
+    <section
+      className="relative min-h-[600px] w-full overflow-hidden bg-cover bg-center"
+      style={{ backgroundImage: "url('/images/homebg.jpg')" }}
+    >
       {/* Gradient overlay */}
       <div
         className="absolute inset-0 before:absolute before:left-1/4 
         before:top-0 before:h-[500px] before:w-[500px] before:rounded-full
-        before:bg-gradient-to-r before:from-violet-600/20 
-        before:to-indigo-600/20 before:blur-3xl"
+        before:bg-gradient-to-r before:from-yellow-500/20 before:to-orange-500/20 before:blur-3xl"
       />
       <div className="conatiner relative mx-auto flex h-full flex-col items-center justify-center px-4 py-24 md:flex-row md:py-32">
         <div className="flex-1 space-y-8 text-center md:text-left">
-          <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
+          <h1 className="text-4xl font-bold tracking-tight text-black sm:text-5xl md:text-6xl">
             Explore the world through
-            <span className="bg-gradient-to-r from-violet-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent font-extrabold">
               {" "}
               words
             </span>
           </h1>
-          <p className="mx-auto max-w-2xl text-lg text-gray-300 md:text-xl">
+          <p className="mx-auto max-w-2xl text-lg text-gray-700 md:text-xl">
             Discover Insightfull Articles, thought-provoking stories, and expret
             prespectives on technology, lifestyle and innovations
           </p>
@@ -33,29 +35,29 @@ export default function HeroSection() {
               Explore Topics
             </Button>
           </div>
-          <div className="grid grid-cols-3 gap-4 pt-8 text-white md:max-w-md">
+          <div className="grid grid-cols-3 gap-4 pt-8 text-black md:max-w-md">
             <div className="space-y-2">
-              <div className="text-2xl font-bold text-primary text-white">
+              <div className="text-2xl font-bold text-primary text-black">
                 1k+
               </div>
-              <div className="text-sm text-gray-400">Published Articles</div>
+              <div className="text-sm text-gray-600">Published Articles</div>
             </div>
             <div className="space-y-2">
-              <div className="text-2xl font-bold text-primary text-white">
+              <div className="text-2xl font-bold text-primary text-black">
                 50+
               </div>
-              <div className="text-sm text-gray-400">Expert Writers</div>
+              <div className="text-sm text-gray-600">Expert Writers</div>
             </div>
             <div className="space-y-2">
-              <div className="text-2xl font-bold text-primary text-white">
+              <div className="text-2xl font-bold text-primary text-black">
                 10M
               </div>
-              <div className="text-sm text-gray-400">Monthly Readers</div>
+              <div className="text-sm text-gray-600">Monthly Readers</div>
             </div>
           </div>
           {/* Image Frame */}
         </div>
-        <div className="mt-12 flex-1 md:mt-0">
+        {/* <div className="mt-12 flex-1 md:mt-0">
           <div
             className={cn(
               "realtive mx-auto w-64 h-64 rounded-2xl overflow-hidden",
@@ -71,7 +73,7 @@ export default function HeroSection() {
               className="object-cover"
             />
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

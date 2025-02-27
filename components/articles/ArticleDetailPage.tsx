@@ -60,9 +60,7 @@ const ArticleDetailPage: React.FC<articleDetailPageProps> = async ({
             <div className="flex flex-wrap gap-2 mb-4">
               <span className="px-3 py-1 text-sm">Web Dev</span>
             </div>
-            <h1 className="text-4xl font-bold mb-4">
-              How to learn web dev in 2025
-            </h1>
+            <h1 className="text-4xl font-bold mb-4">{article.title}</h1>
             <div className="flex itm-center gap-4">
               <Avatar>
                 <AvatarImage

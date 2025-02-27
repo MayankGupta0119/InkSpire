@@ -3,13 +3,22 @@ import Link from "next/link";
 import { Button } from "../ui/button";
 import { Clock, FileText, MessageCircle, PlusCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import {RecentArticless} from "./RecentArticless";
+import { RecentArticless } from "./RecentArticless";
 import { prisma } from "@/lib/prisma";
-import { resolve } from "path";
-import { rejects } from "assert";
+import { auth } from "@clerk/nextjs/server";
 export default async function BlogDashboard() {
+  const { userId } = await auth();
+
+  const existingUser = await prisma.user.findUnique({
+    where: { clerkUserId: userId as string },
+  });
+
+  if (!existingUser) {
+    return <p>User not found.</p>;
+  }
   // getting all articles to show
   const articles = await prisma.article.findMany({
+    where: { authorId: existingUser.id },
     orderBy: { createdAt: "desc" },
     include: {
       comments: true,
@@ -18,7 +27,13 @@ export default async function BlogDashboard() {
   });
 
   //getting totalcomments
-  const totalcomments = await prisma.comment.count();
+  const totalcomments = await prisma.comment.findMany({
+    where: { article: { authorId: existingUser.id } },
+  });
+
+  const totalLIkes = await prisma.like.findMany({
+    where: { article: { authorId: existingUser.id } },
+  });
   return (
     <main className="flex-1 p-4 md:p-8">
       <div className="flex justify-between items-center mb-8">
@@ -47,7 +62,7 @@ export default async function BlogDashboard() {
           <CardContent>
             <div className="text-2xl font-bold">{articles.length}</div>
             <p className="text-sm text-muted-foreground mt-1">
-              +5 from last month
+              +{articles.length} from last month
             </p>
           </CardContent>
         </Card>
@@ -59,23 +74,21 @@ export default async function BlogDashboard() {
             <MessageCircle className="h-4 w-4" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalcomments}</div>
+            <div className="text-2xl font-bold">{totalcomments.length}</div>
             <p className="text-sm text-muted-foreground mt-1">
-              12 awaiting moderation
+              {totalcomments.length} awaiting moderation
             </p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 ">
-            <CardTitle className="font-medium text-sm">
-              Avg Rating Time
-            </CardTitle>
+            <CardTitle className="font-medium text-sm">Total Likes</CardTitle>
             <Clock className="h-4 w-4" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">4.2</div>
+            <div className="text-2xl font-bold">{totalLIkes.length}</div>
             <p className="text-sm text-muted-foreground mt-1">
-              +0.6 from last month
+              {totalLIkes.length} from last month
             </p>
           </CardContent>
         </Card>

@@ -13,10 +13,10 @@ import {
 } from "../ui/table";
 import { Badge } from "../ui/badge";
 import { Prisma } from "@prisma/client";
-import { useFormStatus } from "react-dom";
+import { useUser } from "@clerk/nextjs"; // Import Clerk's useUser hook
 import { deleteArticle } from "@/actions/delete-article";
 
-type recentArticleProps = {
+type RecentArticleProps = {
   articles: Prisma.ArticleGetPayload<{
     include: {
       comments: true;
@@ -25,12 +25,25 @@ type recentArticleProps = {
   }>[];
 };
 
-export const RecentArticless: React.FC<recentArticleProps> = ({ articles }) => {
+export const RecentArticless: React.FC<RecentArticleProps> = ({ articles }) => {
+  const { user } = useUser(); // Get the current logged-in user
+
+  if (!user) {
+    return (
+      <CardContent>You must be logged in to view your articles.</CardContent>
+    );
+  }
+
+  // Filter articles to show only the ones created by the logged-in user
+  const userArticles = articles.filter(
+    (article) => article.author.email === user.primaryEmailAddress?.emailAddress
+  );
+
   return (
     <Card className="mb-8">
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle>Recent Articles</CardTitle>
+          <CardTitle>Your Recent Articles</CardTitle>
           <Button
             className="text-muted-foreground"
             size={"sm"}
@@ -41,7 +54,7 @@ export const RecentArticless: React.FC<recentArticleProps> = ({ articles }) => {
         </div>
       </CardHeader>
 
-      {!articles.length ? (
+      {!userArticles.length ? (
         <CardContent>No Articles Found</CardContent>
       ) : (
         <CardContent>
@@ -56,9 +69,13 @@ export const RecentArticless: React.FC<recentArticleProps> = ({ articles }) => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {articles.map((article) => (
+              {userArticles.map((article) => (
                 <TableRow key={article.id}>
-                  <TableCell>{article.title}</TableCell>
+                  <TableCell>
+                    <Link href={`/articles/${article.id}`}>
+                      {article.title}
+                    </Link>
+                  </TableCell>
                   <TableCell>
                     <Badge
                       className="rounded-full bg-green-100 text-gray-800"
@@ -68,7 +85,9 @@ export const RecentArticless: React.FC<recentArticleProps> = ({ articles }) => {
                     </Badge>
                   </TableCell>
                   <TableCell>{article.comments.length}</TableCell>
-                  <TableCell>{article.createdAt.toDateString()}</TableCell>
+                  <TableCell>
+                    {new Date(article.createdAt).toDateString()}
+                  </TableCell>
                   <TableCell>
                     <div className="flex gap-2">
                       <Link href={`/dashboard/articles/${article.id}/edit`}>
@@ -89,11 +108,11 @@ export const RecentArticless: React.FC<recentArticleProps> = ({ articles }) => {
   );
 };
 
-type deleteButtonProps = {
+type DeleteButtonProps = {
   articleId: string;
 };
 
-const DeleteButton: React.FC<deleteButtonProps> = ({ articleId }) => {
+const DeleteButton: React.FC<DeleteButtonProps> = ({ articleId }) => {
   const [isPending, startTransition] = useTransition();
   return (
     <form

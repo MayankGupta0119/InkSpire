@@ -11,7 +11,7 @@ export function BlogFooter() {
           {/* Branding Section */}
           <div className="md:col-span-2 lg:col-span-2">
             <h2 className="text-2xl font-bold">
-              <span className="bg-gradient-to-r from-purple-600 to-indigo-600 dark:from-purple-400 dark:to-indigo-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-yellow-500 to-orange-400 dark:to-yellow-400 bg-clip-text text-transparent">
                 Ink
               </span>
               <span className="text-foreground">Spire</span>

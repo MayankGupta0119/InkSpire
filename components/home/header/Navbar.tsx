@@ -25,7 +25,7 @@ export default function Navbar() {
           <div className="flex items-center gap-8">
             <Link href={"/"} className="flex items-center space-x-2">
               <span className="font-bold text-2xl">
-                <span className="bg-gradient-to-r from-purple-600 to bg-indigo-500 dark:from-purple-400 dark:to-indigo-400 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-yellow-500 to-orange-400 dark:to-yellow-400 bg-clip-text text-transparent">
                   Ink
                 </span>
                 <span className="text-foreground">Spire</span>
@@ -36,25 +36,25 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-4">
             <Link
               href={"/articles"}
-              className="text-sm font-medium text-foreground transition-colors hover:text-foreground"
+              className="text-md font-semibold  text-foreground transition-all duration-200 ease-in-out 
+               hover:text-transparent hover:bg-clip-text 
+               hover:bg-gradient-to-r hover:from-yellow-500 hover:to-orange-400"
             >
               Articles
             </Link>
             <Link
-              href={"/tutorial"}
-              className="text-sm font-medium text-foreground transition-colors hover:text-foreground"
-            >
-              Tutorial
-            </Link>
-            <Link
               href={"/about"}
-              className="text-sm font-medium text-foreground transition-colors hover:text-foreground"
+              className="text-md font-semibold  text-foreground transition-all duration-200 ease-in-out 
+               hover:text-transparent hover:bg-clip-text 
+               hover:bg-gradient-to-r hover:from-yellow-500 hover:to-orange-400"
             >
               About
             </Link>
             <Link
               href={"/dashboard"}
-              className="text-sm font-medium text-foreground transition-colors hover:text-foreground"
+              className="text-md font-semibold  text-foreground transition-all duration-200 ease-in-out 
+               hover:text-transparent hover:bg-clip-text 
+               hover:bg-gradient-to-r hover:from-yellow-500 hover:to-orange-400"
             >
               Dashboard
             </Link>
