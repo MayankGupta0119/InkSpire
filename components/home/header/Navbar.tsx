@@ -126,12 +126,13 @@ export default function Navbar() {
 
           {/* Mobile Navigation Links */}
           <div className="space-y-2 px-4">
-            <Link
-              href="/articles"
-              className="block px-3 py-2 text-base font-medium text-foreground"
+            <Button
+              variant="link"
+              className="text-md font-semibold text-foreground transition-all duration-200 ease-in-out hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-yellow-500 hover:to-orange-400"
+              onClick={() => handleProtectedNavigation("/articles")}
             >
               Articles
-            </Link>
+            </Button>
 
             <Link
               href="/about"
@@ -140,12 +141,13 @@ export default function Navbar() {
               About
             </Link>
 
-            <Link
-              href="/dashboard"
-              className="block px-3 py-2 text-base font-medium text-foreground"
+            <Button
+              variant="link"
+              className="text-md font-semibold text-foreground transition-all duration-200 ease-in-out hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-yellow-500 hover:to-orange-400"
+              onClick={() => handleProtectedNavigation("/dashboard")}
             >
               Dashboard
-            </Link>
+            </Button>
           </div>
 
           {/* Mobile Auth Buttons */}
