@@ -2,7 +2,8 @@ FROM node:latest
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
+COPY package* .
+COPY ./prisma .
 
 RUN npm install 
 
