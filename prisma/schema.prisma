@@ -32,7 +32,7 @@ model Article {  // Renamed from Articles to Article
   featuredImage String 
   author User @relation(fields: [authorId], references: [id])
   authorId String // Foreign key
-  comments Comment[]
+  comments Comment[]  
   likes Like[]
   createdAt DateTime @default(now())
 } 

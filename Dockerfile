@@ -7,9 +7,9 @@ COPY ./prisma .
 
 RUN npm install 
 
-COPY . .
-
 RUN npx prisma generate
+
+COPY . .
 
 ARG NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
 
